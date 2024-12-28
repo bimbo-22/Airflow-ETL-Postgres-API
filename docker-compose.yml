@@ -14,6 +14,39 @@ services:
     networks:
       - airflow_network
 
+  airflow:
+    build:
+      context: .
+    container_name: airflow
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - airflow_network
+
+  backend:
+    image: python:3.10-slim
+    container_name: fastapi_backend
+    env_file:
+      - .env
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: ["uvicorn", "backend:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - airflow_network
+
 networks:
   airflow_network:
     external: false
