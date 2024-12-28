@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y libpq-dev gcc
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy your FastAPI app (backend.py) into the container
-COPY backend.py /app/backend.py
+# Copy (backend.py) into the container
+COPY backend/backend.py /app/backend.py
 
-# Expose the port that FastAPI will run on
+# Expose the port 
 EXPOSE 8000
 
 # Command to run FastAPI with Uvicorn
