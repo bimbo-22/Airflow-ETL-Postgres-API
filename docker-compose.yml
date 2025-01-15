@@ -24,6 +24,7 @@ services:
     networks:
       - airflow_network
 
+    
 networks:
   airflow_network:
     external: false
